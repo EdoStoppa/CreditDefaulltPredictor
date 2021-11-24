@@ -53,9 +53,13 @@ def get_test(drops=[]):
 #   folds= get_folds()
 #   for t_data, t_labels, v_data, v_labels in folds:
 #       ...
-def get_folds(k=5, csv='train.csv'):
+def get_folds(k=5, csv='train.csv', drops=[]):
     df = pd.read_csv(csv)
-
+    # Drop the selected columns
+    if len(drops) > 0:
+        for drop in drops:
+            df = df.drop(drop, axis=1)
+    
     idx = k
     sets = []
     # Split the dataset in k partition
