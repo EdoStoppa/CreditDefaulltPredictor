@@ -3,8 +3,8 @@ from sklearn import metrics
 import os
 
 # Returns 2 numpy arrays of the full dataset: data, labels
-def get_dataset_full(drops=[]):
-    df = pd.read_csv(os.path.join('data', 'balanced_data.csv'))
+def get_dataset_full(csv='balanced_data.csv', drops=[]):
+    df = pd.read_csv(os.path.join('data', csv))
     # Drop the selected columns
     if len(drops) > 0:
         for drop in drops:
@@ -17,8 +17,8 @@ def get_dataset_full(drops=[]):
     return data, labels
 
 # Returns 2 numpy arrays of the train dataset: data, labels
-def get_train(drops=[]):
-    df = pd.read_csv(os.path.join('data', 'train_balanced.csv'))
+def get_train(csv='train_balanced.csv', drops=[]):
+    df = pd.read_csv(os.path.join('data', csv))
     # Drop the selected columns
     if len(drops) > 0:
         for drop in drops:
@@ -31,8 +31,8 @@ def get_train(drops=[]):
     return data, labels
 
 # Returns 2 numpy arrays of the test dataset: data, labels
-def get_test(drops=[]):
-    df = pd.read_csv(os.path.join('data', 'test_balanced.csv'))
+def get_test(csv='test_balanced.csv', drops=[]):
+    df = pd.read_csv(os.path.join('data', csv))
     # Drop the selected columns
     if len(drops) > 0:
         for drop in drops:
@@ -54,8 +54,8 @@ def get_test(drops=[]):
 #   folds= get_folds()
 #   for t_data, t_labels, v_data, v_labels in folds:
 #       ...
-def get_folds(k=5, csv=os.path.join('data', 'train_balanced.csv'), drops=[]):
-    df = pd.read_csv(csv)
+def get_folds(k=5, csv='train_balanced.csv', drops=[]):
+    df = pd.read_csv(os.path.join('data', csv))
     # Drop the selected columns
     if len(drops) > 0:
         for drop in drops:
