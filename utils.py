@@ -1,8 +1,13 @@
 import pandas as pd
+import sklearn as sk
 
 # Returns 2 numpy arrays of the full dataset: data, labels
-def get_dataset_full():
+def get_dataset_full(drops=[]):
     df = pd.read_csv('original_data.csv')
+    # Drop the selected columns
+    if len(drops) > 0:
+        for drop in drops:
+            df = df.drop(drop, axis=1)
     # Take the column with the label
     labels = df['default_next_month'].to_numpy()
     # Remove the labels from the dataset
@@ -11,8 +16,12 @@ def get_dataset_full():
     return data, labels
 
 # Returns 2 numpy arrays of the train dataset: data, labels
-def get_train():
+def get_train(drops=[]):
     df = pd.read_csv('train.csv')
+    # Drop the selected columns
+    if len(drops) > 0:
+        for drop in drops:
+            df = df.drop(drop, axis=1)
     # Take the column with the label
     labels = df['default_next_month'].to_numpy()
     # Remove the labels from the dataset
@@ -21,8 +30,12 @@ def get_train():
     return data, labels
 
 # Returns 2 numpy arrays of the test dataset: data, labels
-def get_test():
+def get_test(drops=[]):
     df = pd.read_csv('test.csv')
+    # Drop the selected columns
+    if len(drops) > 0:
+        for drop in drops:
+            df = df.drop(drop, axis=1)
     # Take the column with the label
     labels = df['default_next_month'].to_numpy()
     # Remove the labels from the dataset
@@ -70,8 +83,16 @@ def get_folds(k=5, csv='train.csv'):
 
     return cross_val_sets
 
+# Takes the ground truths and the predictions, then return 4 metrics:
+def get_metrics(truths, predictions):
+    accuracy = sk.metrics.accuracy_score(truths, predictions)
+    precision = sk.metrics.precision_score(truths, predictions)
+    recall = sk.metrics.recall_score(truths, predictions)
+    f_score = sk.metrics.f1_score(truths, predictions)
+
+    return accuracy, precision, recall, f_score
+
 # Used only for testing
 if __name__ == '__main__':
-    #save_train_test()
-    #get_dataset_full()
+    get_dataset_full()
     get_folds()
