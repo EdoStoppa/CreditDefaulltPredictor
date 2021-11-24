@@ -1,5 +1,5 @@
 import pandas as pd
-import sklearn as sk
+from sklearn import metrics
 
 # Returns 2 numpy arrays of the full dataset: data, labels
 def get_dataset_full(drops=[]):
@@ -59,7 +59,7 @@ def get_folds(k=5, csv='train.csv', drops=[]):
     if len(drops) > 0:
         for drop in drops:
             df = df.drop(drop, axis=1)
-    
+
     idx = k
     sets = []
     # Split the dataset in k partition
@@ -89,10 +89,10 @@ def get_folds(k=5, csv='train.csv', drops=[]):
 
 # Takes the ground truths and the predictions, then return 4 metrics:
 def get_metrics(truths, predictions):
-    accuracy = sk.metrics.accuracy_score(truths, predictions)
-    precision = sk.metrics.precision_score(truths, predictions)
-    recall = sk.metrics.recall_score(truths, predictions)
-    f_score = sk.metrics.f1_score(truths, predictions)
+    accuracy = metrics.accuracy_score(truths, predictions)
+    precision = metrics.precision_score(truths, predictions)
+    recall = metrics.recall_score(truths, predictions)
+    f_score = metrics.f1_score(truths, predictions)
 
     return accuracy, precision, recall, f_score
 
@@ -100,3 +100,4 @@ def get_metrics(truths, predictions):
 if __name__ == '__main__':
     get_dataset_full()
     get_folds()
+    print(get_metrics([0,0], [0,1]))
