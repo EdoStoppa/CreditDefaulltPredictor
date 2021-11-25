@@ -2,9 +2,6 @@ import utils as u
 from sklearn.svm import SVC
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
-import os
-
-os.chdir('./..')
 
 # Given folds and a model(clf), apply LR on all folds and return the avg accuracy
 def SVC_CV(folds, clf):

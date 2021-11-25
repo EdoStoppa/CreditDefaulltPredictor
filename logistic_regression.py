@@ -1,6 +1,5 @@
 from sklearn.linear_model import LogisticRegression
 import utils as u
-import os
 
 # Given folds and a model(clf), apply LR on all folds and return the avg accuracy
 def logistic_regression_CV(folds, clf):
@@ -47,8 +46,6 @@ def myTest(model, testSet):
 
 
 def main():
-
-    os.chdir('./..')
 
     #FIRST PART
 
