@@ -1,4 +1,4 @@
-# Logistic Regression
+# Support Vector Machines (Classifier)
 ### First part:
 #### (Tuning Hyperparameters)
 The first phase is dedicated to tuning the **Hyperparameters** using the 
@@ -17,20 +17,19 @@ First, we try to drop the column **SEX**, to see if the accuracy change (should 
 After, we try to drop the columns **PAY**, to show how they impact the accuracy of the model.
 
 ## Hyperparameters
-- solver = 'liblinear'
-- penalty = 'l1'
-- C = 0.4
-- intercept_scaling = 1e-4
-- class_weight = 'balanced'
+- StandardScaler()
+- C = 5
+- kernel = 'rbf'
+- tol = 0.5
 
 ## Results
 ```
 Test set evaluations: 
-Accuracy: 0.6781, Precision: 0.6909, Recall: 0.6352, F-Score: 0.6619
+Accuracy: 0.7009, Precision: 0.7561, Recall: 0.5860, F-Score: 0.6603
 
 Test set evaluations, after dropping column "SEX":
-Accuracy: 0.6731, Precision: 0.6857, Recall: 0.6295, F-Score: 0.6564
+Accuracy: 0.6984, Precision: 0.7537, Recall: 0.5822, F-Score: 0.6569
 
 Test set evaluations, after dropping columns "PAY":
-Accuracy: 0.6194, Precision: 0.5962, Recall: 0.7202, F-Score: 0.6524
+Accuracy: 0.6194, Precision: 0.5920, Recall: 0.7480, F-Score: 0.6609
 ```
