@@ -1,6 +1,6 @@
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import BernoulliNB
-
+from datetime import datetime
 from utils import *
 
 # Returns the accuracy as a result of the k-fold CV (used both by Gaussian and Bernoulli NB)
@@ -14,16 +14,26 @@ def naive_bayes_cv(nb, folds):
   return accuracy / len(folds) 
 
 # Does the training and evaluate accuracy and other metrics on the test set
-def test(nb, X_train, y_train, X_test, y_test):
+def test(nb, X_train, y_train, X_test, y_test, return_times = False):
+  start_time_fit = datetime.now()
   trained_model = nb.fit(X_train, y_train)
+  end_time_fit = datetime.now()
+
+  start_time_predict = datetime.now()
   y_pred = trained_model.predict(X_test)
-  metrics = get_metrics(y_test, y_pred)
+  end_time_predict = datetime.now()
+
+  metrics = get_metrics(y_test, y_pred) 
+  
+  if(return_times):
+    metrics = metrics + ((end_time_fit - start_time_fit).total_seconds() * 1000, (end_time_predict - start_time_predict).total_seconds() * 1000)
+
   return metrics
 
 
 def main():
 
-  # Cross validation on some hyperparameters
+  ### Cross validation on some hyperparameters
 
   folds = get_folds()
 
@@ -36,7 +46,7 @@ def main():
 
   print("\n")
 
-  # Now we try to tune hyperparameters for both models
+  ### Now we try to tune hyperparameters for both models
 
   # We try to set the variance smoothing for Gaussian NB
   gnb = GaussianNB(var_smoothing=1)
@@ -49,16 +59,16 @@ def main():
 
   print("\n")
 
-  # Now we evaluate metrics on the training set and test set, evaluating the accuracy on the latter and if we have under/over fitting
+  ### Now we evaluate metrics on the training set and test set, evaluating the accuracy on the latter and the possible under/over fitting
 
-  X_train, y_train = get_train(drops=[])
-  X_test, y_test = get_test(drops=[])
+  X_train, y_train = get_train()
+  X_test, y_test = get_test()
 
   gnb_accuracy_train, gnb_precision_train, gnb_recall_train, gnb_f_score_train = test(gnb, X_train, y_train, X_train, y_train)
   bnb_accuracy_train, bnb_precision_train, bnb_recall_train, bnb_f_score_train = test(bnb, X_train, y_train, X_train, y_train)
 
-  gnb_accuracy, gnb_precision, gnb_recall, gnb_f_score = test(gnb, X_train, y_train, X_test, y_test)
-  bnb_accuracy, bnb_precision, bnb_recall, bnb_f_score = test(bnb, X_train, y_train, X_test, y_test)
+  gnb_accuracy, gnb_precision, gnb_recall, gnb_f_score, gnb_time_to_fit, gnb_time_to_predict = test(gnb, X_train, y_train, X_test, y_test, return_times=True)
+  bnb_accuracy, bnb_precision, bnb_recall, bnb_f_score, bnb_time_to_fit, bnb_time_to_predict = test(bnb, X_train, y_train, X_test, y_test, return_times=True)
 
   print(f"[GaussianNB - TRAINING]   Accuracy: {gnb_accuracy_train:.4f}, Precision: {gnb_precision_train:.4f}, Recall: {gnb_recall_train:.4f}, F-Score: {gnb_f_score_train:.4f}")
   print(f"[BernoulliNB - TRAINING]  Accuracy: {bnb_accuracy_train:.4f}, Precision: {bnb_precision_train:.4f}, Recall: {bnb_recall_train:.4f}, F-Score: {bnb_f_score_train:.4f}")
@@ -68,7 +78,13 @@ def main():
   print(f"[GaussianNB - TEST]   Accuracy: {gnb_accuracy:.4f}, Precision: {gnb_precision:.4f}, Recall: {gnb_recall:.4f}, F-Score: {gnb_f_score:.4f}")
   print(f"[BernoulliNB - TEST]  Accuracy: {bnb_accuracy:.4f}, Precision: {bnb_precision:.4f}, Recall: {bnb_recall:.4f}, F-Score: {bnb_f_score:.4f}")
 
-  # Now we try to drop some attributes to do some fairness considerations
+  print(f"[GaussianNB - TEST] Time needed to train: {gnb_time_to_fit} ms")
+  print(f"[GaussianNB - TEST] Time needed to do inference: {gnb_time_to_predict} ms")
+
+  print(f"[BernoulliNB - TEST] Time needed to train: {bnb_time_to_fit} ms")
+  print(f"[BernoulliNB - TEST] Time needed to do inference: {bnb_time_to_predict} ms")
+
+  ### Now we try to drop some attributes to do some considerations about bias
 
   X_train, y_train = get_train(drops=["SEX"])
   X_test, y_test = get_test(drops=["SEX"])
@@ -83,7 +99,6 @@ def main():
 
   print(f"[GaussianNB - TEST]   Accuracy: {gnb_accuracy:.4f}, Precision: {gnb_precision:.4f}, Recall: {gnb_recall:.4f}, F-Score: {gnb_f_score:.4f}")
   print(f"[BernoulliNB - TEST]  Accuracy: {bnb_accuracy:.4f}, Precision: {bnb_precision:.4f}, Recall: {bnb_recall:.4f}, F-Score: {bnb_f_score:.4f}")
-
 
   X_train, y_train = get_train(drops=["PAY_0", "PAY_2", "PAY_3", "PAY_4", "PAY_5", "PAY_6"])
   X_test, y_test = get_test(drops=["PAY_0", "PAY_2", "PAY_3", "PAY_4", "PAY_5", "PAY_6"])
