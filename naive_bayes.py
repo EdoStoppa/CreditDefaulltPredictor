@@ -106,7 +106,7 @@ def main():
   gnb = GaussianNB(var_smoothing=1)
   bnb = BernoulliNB(binarize=1.0)
 
-  print("\nDropped the PAY column...\n")
+  print("\nDropped the PAY columns...\n")
 
   gnb_accuracy, gnb_precision, gnb_recall, gnb_f_score = test(gnb, X_train, y_train, X_test, y_test)
   bnb_accuracy, bnb_precision, bnb_recall, bnb_f_score = test(bnb, X_train, y_train, X_test, y_test)
