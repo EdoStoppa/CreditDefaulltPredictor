@@ -2,6 +2,7 @@ import utils as u
 from sklearn.svm import SVC
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
+from datetime import datetime
 
 # Given folds and a model(clf), apply LR on all folds and return the avg accuracy
 def SVC_CV(folds, clf):
@@ -31,7 +32,7 @@ def myTraining():
 
     # final version, main update here is the change of the penalty from l2 to l1
     clf = make_pipeline(StandardScaler(), SVC(C=5, kernel='rbf', tol=0.5))
-    print(f'Final model (StandardScaler with some changing in hyperparameters) -> Accuracy(CV): {SVC_CV(folds, clf):.4f}')
+    print(f'\nFinal model (StandardScaler with some changing in hyperparameters) -> Accuracy(CV): {SVC_CV(folds, clf):.4f}')
 
     return clf
 
@@ -39,7 +40,12 @@ def myTraining():
 # Testing the trained model on the test set (both passed as parameters)
 def myTest(model, testSet):
     test_data, test_label = testSet
+
+    start_time_inf = datetime.now()
     predictions = model.predict(test_data)
+    end_time_inf = datetime.now()
+    print(f"Time needed to do inference on test data: " +
+          f"{(end_time_inf - start_time_inf).total_seconds() * 1000:.2f} ms")
     # Using the get_metrics function provided in utils.py to get multiple evaluations
     accuracy, precision, recall, f_score = u.get_metrics(test_label, predictions)
     print(f'Accuracy: {accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F-Score: {f_score:.4f}')
@@ -59,9 +65,17 @@ def main():
     '''After tuning the Hyperparameters and finding the best configuration based on the avg Accuracy given by CV,
        we train the model on the full training set'''
     train_data, train_label = u.get_train()
-    modelT = model.fit(train_data, train_label)  # trained model
 
-    # We are now ready to test it on the training set
+    start_time_fit = datetime.now()
+    modelT = model.fit(train_data, train_label)  # trained model
+    end_time_fit = datetime.now()
+    print(f"Time needed to train: " +
+          f"{(end_time_fit - start_time_fit).total_seconds() * 1000:.2f} ms")
+
+    # Evaluations on training set
+    print(f'Accuracy on training set: {modelT.score(train_data, train_label):.4f}')
+
+    # We are now ready to test it on the test set
     testSet = u.get_test()
     print("\nTest set evaluations: ")
     myTest(modelT, testSet)
