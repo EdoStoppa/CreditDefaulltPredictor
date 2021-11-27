@@ -201,8 +201,8 @@ def rand_forest():
     train_data_no_s = ut.get_train(drops=['SEX'])
     test_data_no_s = ut.get_test(drops=['SEX'])
 
-    train_data_no_p = ut.get_train(drops=['PAY_0'])
-    test_data_no_p = ut.get_test(drops=['PAY_0'])
+    train_data_no_p = ut.get_train(drops=['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6'])
+    test_data_no_p = ut.get_test(drops=['PAY_0', 'PAY_2', 'PAY_3', 'PAY_4', 'PAY_5', 'PAY_6'])
 
     names = ['Default Model', 'Enhanced Model', 'Final Model']
     models = [base_model, second_model, cross_model]
@@ -212,7 +212,7 @@ def rand_forest():
         check_stats(train_data, test_data, models[idx], space='    ')
         print('\n    Without column "SEX"...')
         check_stats(train_data_no_s, test_data_no_s, models[idx], space='    ')
-        print('\n    Without column "PAY_0"...')
+        print('\n    Without column "PAY_*"...')
         check_stats(train_data_no_p, test_data_no_p, models[idx], space='    ')
         print('\n')
 
