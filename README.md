@@ -1,4 +1,4 @@
-#Credit Default Predictor
+# Credit Default Predictor
 This project aimed to classify the defaulted payments of customers using five ML techniques.  
 The dataset contains 30000 instances of customers in Taiwan (https://archive.ics.uci.edu/ml/datasets/default+of+credit+card+clients).
 
