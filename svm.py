@@ -108,9 +108,17 @@ def myTestA():
     clf.fit(train_data, train_label)
     print(clf.score(test_data, test_label))
 
+def default_accuracy():
+    clf = SVC()
+    train_data, train_label = u.get_train()
+    test_data, test_label = u.get_test()
+    clf.fit(train_data, train_label)
+    print(f'Accuracy on training set: {clf.score(train_data, train_label)}')
+    print(f'Accuracy on test set: {clf.score(test_data, test_label)}')
 
 if __name__ == '__main__':
     main()
+    #default_accuracy()()
 
 
 

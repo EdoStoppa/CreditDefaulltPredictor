@@ -10,7 +10,7 @@ There are 3 phases:
 ## Hyperparameters
 - StandardScaler()
 - C = 5
-- kernel = 'rbf'
+- kernel = rbf
 - tol = 0.5
 
 ## Results

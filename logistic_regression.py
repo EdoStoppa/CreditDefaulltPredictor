@@ -98,6 +98,15 @@ def main():
     print("\nTest set evaluations, after dropping columns \"PAY\":")
     myTest(modelT, testSet)
 
+def default_accuracy():
+    clf = LogisticRegression(max_iter=1000)
+    train_data, train_label = u.get_train()
+    test_data, test_label = u.get_test()
+    clf.fit(train_data, train_label)
+    print(f'Accuracy on training set: {clf.score(train_data, train_label)}')
+    print(f'Accuracy on test set: {clf.score(test_data, test_label)}')
+
 
 if __name__ == '__main__':
     main()
+    #default_accuracy()

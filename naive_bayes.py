@@ -114,8 +114,17 @@ def main():
   print(f"[GaussianNB - TEST]   Accuracy: {gnb_accuracy:.4f}, Precision: {gnb_precision:.4f}, Recall: {gnb_recall:.4f}, F-Score: {gnb_f_score:.4f}")
   print(f"[BernoulliNB - TEST]  Accuracy: {bnb_accuracy:.4f}, Precision: {bnb_precision:.4f}, Recall: {bnb_recall:.4f}, F-Score: {bnb_f_score:.4f}")
 
+def default_accuracy():
+    clf = BernoulliNB()
+    train_data, train_label = get_train()
+    test_data, test_label = get_test()
+    clf.fit(train_data, train_label)
+    print(f'Accuracy on training set: {clf.score(train_data, train_label)}')
+    print(f'Accuracy on test set: {clf.score(test_data, test_label)}')
+
 if __name__ == '__main__':
-    main()  
+  main()
+  #default_accuracy()
 
 
 
